@@ -8,9 +8,9 @@ KUBECONFIG=$BUILD_ROOT/kubeconfig-clutch
 
 
 NAME=kind
-RELEASE=v0.9.0
-OSX_RELEASE_SUM=849034ffaea8a0e50f9153078890318d5863bafe01495418ea0ad037b518de90
-LINUX_RELEASE_SUM=35a640e0ca479192d86a51b6fd31c657403d2cf7338368d62223938771500dc8
+RELEASE=v0.10.0
+OSX_RELEASE_SUM=a934e573621917a2785f3ddfa7b6187d18fa1c20c94c013919736b3256d37f57
+LINUX_RELEASE_SUM=74767776488508d847b0bb941212c1cb76ace90d9439f4dee256d8a04f1309c6
 
 ARCH=amd64
 
@@ -61,7 +61,7 @@ seed() {
     KUBECONFIG=$KUBECONFIG kubectl create ns "stateful-${env}" || true
 
     # Creating resources in `envoy-*` namespace
-    KUBECONFIG=$KUBECONFIG kubectl create deployment envoy --image envoyproxy/envoy:v1.14-latest -n "envoy-${env}" || true
+    KUBECONFIG=$KUBECONFIG kubectl create deployment envoy --image envoyproxy/envoy:v1.18-latest -n "envoy-${env}" || true
     KUBECONFIG=$KUBECONFIG kubectl autoscale deployment envoy --cpu-percent=50 --min=1 --max=2 -n "envoy-${env}" || true
     KUBECONFIG=$KUBECONFIG kubectl expose deployment envoy --port=8080 -n "envoy-${env}" || true
     KUBECONFIG=$KUBECONFIG kubectl create configmap "configmap-${env}-test-1" --from-literal=environment="${env}" -n "envoy-${env}" || true
